@@ -1,0 +1,9 @@
+runtime: python38
+
+instance_class: F1
+
+env_variables:
+  MYSQL_USER: 'root'
+  MYSQL_PASSWORD: 'mongodb99'
+  MYSQL_DB: 'calCount'
+  MYSQL_HOST: '35.223.231.139'

@@ -47,8 +47,8 @@
 
                     <thead>
                     <tr>
-                        <th>food_id</th>
-                        <th>food_name</th>
+                        <th>foodId</th>
+                        <th>foodName</th>
                         <th>calories</th>
                         <th>Action</th>
                     </tr>
@@ -57,14 +57,14 @@
                     <tbody>
                    {% for row in foods %}
                     <tr>
-                        <td>{{row.food_id}}</td>
-                        <td>{{row.food_name}}</td>
+                        <td>{{row.foodId}}</td>
+                        <td>{{row.foodName}}</td>
                         <td>{{row.calories}}</td>
 
 
                         <td>
-                            <a href="/food_update/{{row.food_id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.food_id}}">Edit</a>
-                            <a href="/food_delete/{{row.food_id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+                            <a href="/food_update/{{row.foodId}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.foodId}}">Edit</a>
+                            <a href="/food_delete/{{row.foodId}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
 
                         </td>
 
@@ -73,7 +73,7 @@
 
 
                   <!-- Modal Edit Food-->
-<div id="modaledit{{row.food_id}}" class="modal fade" role="dialog">
+<div id="modaledit{{row.foodId}}" class="modal fade" role="dialog">
    <div class="modal-dialog">
 
 
@@ -98,10 +98,10 @@
                <div class="form-group">
 
 
-                  <label>food_name:</label>
-                   <input type="hidden"  name="food_id" value="{{row.food_id}}">
+                  <label>foodName:</label>
+                   <input type="hidden"  name="foodId" value="{{row.foodId}}">
 
-                  <input type="text" maxlength="100" class="form-control" name="food_name" value="{{row.food_name}}" required="1">
+                  <input type="text" maxlength="100" class="form-control" name="foodName" value="{{row.foodName}}" required="1">
 
 
                </div>
@@ -110,7 +110,7 @@
 
 
                   <label>calories:</label>
-                   <input type="hidden"  name="food_id" value="{{row.food_id}}">
+                   <input type="hidden"  name="foodId" value="{{row.foodId}}">
 
                   <input type="number" class="form-control" name="calories" value="{{row.calories}}" required="1">
 
@@ -177,8 +177,8 @@
 
                <div class="form-group">
 
-                  <label>food_name:</label>
-                  <input type="text" maxlength="100" class="form-control" name="food_name" required="1">
+                  <label>foodName:</label>
+                  <input type="text" maxlength="100" class="form-control" name="foodName" required="1">
 
 
                </div>
