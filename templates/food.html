@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block title %} Food {% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-3">
+
+                <h2>Manage <b>Food </b>  <button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Add New Food</button> </h2>
+
+
+                {% with messages = get_flashed_messages(with_categories=True) %}
+
+                {% if messages %}
+
+                {% for category, message in messages %}
+
+                <div class="alert alert-{{ category }} alert-dismissable" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+
+                        <span aria-hidden="true">x</span>
+
+                    </button>
+
+
+                {{message}}
+
+
+                </div>
+
+
+                {% endfor %}
+
+                {% endif %}
+                {% endwith %}
+
+
+                <table class="table table-hover table-dark food_table">
+
+                    <thead>
+                    <tr>
+                        <th>food_id</th>
+                        <th>food_name</th>
+                        <th>calories</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                   {% for row in foods %}
+                    <tr>
+                        <td>{{row.food_id}}</td>
+                        <td>{{row.food_name}}</td>
+                        <td>{{row.calories}}</td>
+
+
+                        <td>
+                            <a href="/food_update/{{row.food_id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.food_id}}">Edit</a>
+                            <a href="/food_delete/{{row.food_id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+
+                        </td>
+
+                    </tr>
+
+
+
+                  <!-- Modal Edit Food-->
+<div id="modaledit{{row.food_id}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+
+
+      <div class="modal-content">
+
+
+         <div class="modal-header">
+
+
+            <h4 class="modal-title">Update Information</h4>
+
+
+         </div>
+
+
+         <div class="modal-body">
+
+
+            <form action="{{url_for('food_update')}}" method="POST">
+
+
+               <div class="form-group">
+
+
+                  <label>food_name:</label>
+                   <input type="hidden"  name="food_id" value="{{row.food_id}}">
+
+                  <input type="text" maxlength="100" class="form-control" name="food_name" value="{{row.food_name}}" required="1">
+
+
+               </div>
+
+                <div class="form-group">
+
+
+                  <label>calories:</label>
+                   <input type="hidden"  name="food_id" value="{{row.food_id}}">
+
+                  <input type="number" class="form-control" name="calories" value="{{row.calories}}" required="1">
+
+
+               </div>
+
+
+               <div class="form-group">
+
+
+                  <button class="btn btn-primary" type="submit">Update</button>
+
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+
+            </div>
+
+
+
+
+                  <!-- Modal Add Food-->
+
+
+<div id="mymodal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+
+            <h4 class="modal-title">Add Food</h4>
+         </div>
+         <div class="modal-body">
+
+            <form action="{{url_for('food_insert')}}" method="POST">
+
+
+               <div class="form-group">
+
+                  <label>food_name:</label>
+                  <input type="text" maxlength="100" class="form-control" name="food_name" required="1">
+
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>calories:</label>
+                  <input type="number" class="form-control" name="calories" required="1">
+
+
+               </div>
+
+
+
+
+               <div class="form-group">
+
+
+                  <button class="btn btn-primary" type="submit">Add Food</button>
+
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+
+</div>
+
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+    $('.food_table').DataTable();
+</script>
+
+
+{% endblock %}
+
