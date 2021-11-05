@@ -28,6 +28,7 @@ def init_connect_engine():
     )
     return pool
 
+
 engine = init_connect_engine()
 conn = engine.connect()
 
@@ -78,9 +79,35 @@ def food_delete(foodId):
     return redirect(url_for('food'))
 
 
+@app.route('/totalCals')
+def totalCals():
+
+    sql = "SELECT firstName, lastName, date, SUM(fh.quantity * f.calories) as totalCals " \
+          "FROM FoodHistory fh NATURAL JOIN UsersFoods uf NATURAL JOIN Users u NATURAL JOIN Food f " \
+          "GROUP BY userId, firstName, lastName, date " \
+          "ORDER BY firstName, lastName"
+
+
+    all_data = conn.execute(sql).fetchall()
+    return render_template("totalCals.html", totals=all_data)
+
+
+@app.route('/totalBurned')
+def totalBurned():
+
+    sql = "SELECT firstName, lastName, date, SUM(duration * caloriesBurned) as totalBurned " \
+          "FROM ExerciseHistory eh NATURAL JOIN UsersExercises ue NATURAL JOIN Users u NATURAL JOIN Exercise e " \
+          "GROUP BY userId, firstName, lastName, date " \
+          "ORDER BY firstName, lastName"
+
+    all_data = conn.execute(sql).fetchall()
+    return render_template("totalBurned.html", totals=all_data)
+
+
 @app.route('/')
 def chandrachur():
     return render_template("menu.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

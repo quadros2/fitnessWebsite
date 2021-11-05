@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block title %} Total Calories Consumed {% endblock %}
+
+{% block body %}
+
+<div class="text-center">
+
+    <a href="/food" class="btn btn-primary">Food Table</a>
+    <a href="/totalCals" class="btn btn-primary">Total Calories Consumed</a>
+
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-3">
+
+
+                <table class="table table-hover table-dark totalBurned_table">
+
+                    <thead>
+                    <tr>
+                        <th>firstName</th>
+                        <th>lastName</th>
+                        <th>date</th>
+                        <th>totalBurned</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                   {% for row in totals %}
+                    <tr>
+                        <td>{{row.firstName}}</td>
+                        <td>{{row.lastName}}</td>
+                        <td>{{row.date}}</td>
+                        <td>{{row.totalBurned}}</td>
+
+                    </tr>
+
+
+
+
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+    $('.totalBurned_table').DataTable();
+</script>
+
+
+{% endblock %}
+
