@@ -6,6 +6,7 @@ import os
 import pymysql
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'KEY'
 
 
 def init_connect_engine():
@@ -28,38 +29,53 @@ def init_connect_engine():
     return pool
 
 engine = init_connect_engine()
-
 conn = engine.connect()
-
-# app.config["SECRET_KEY"] = "yoursecretkey"
-# app.config["SQLALCHEMY_DATABASE_URI"]= "mysql+pymysql://root:mongodb99@35.223.231.139/calCount"
-# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-# db = SQLAlchemy(app)
-
 
 @app.route('/food')
 def food():
-    # all_data = Food.query.all()
     all_data = conn.execute("SELECT * FROM Food;").fetchall()
     return render_template("food.html", foods=all_data)
 
 
 @app.route('/food_insert', methods=['POST'])
 def food_insert():
-    # haven't written functionality yet
-    return
+    if request.method == 'POST':
+        foodName = request.form['foodName']
+        calories = request.form['calories']
+
+        sql = "INSERT INTO Food (foodName, calories) VALUES (%s, %s)"
+        params = (foodName, calories)
+        conn.execute(sql, params)
+
+        flash("Food Inserted Successfully", category='success')
+        return redirect(url_for('food'))
 
 
 @app.route('/food_update', methods=['GET', 'POST'])
 def food_update():
-    # haven't written functionalty yet
-    return
+    if request.method == 'POST':
+
+        foodId = request.form.get('foodId')
+        newfoodName = request.form['foodName']
+        newcalories = request.form['calories']
+
+        sql = "UPDATE Food SET foodName = (%s), calories = (%s) WHERE foodId = (%s)"
+        params = (newfoodName, newcalories, foodId)
+        conn.execute(sql, params)
+
+        flash("Food Updated Successfully", category='success')
+        return redirect(url_for('food'))
+
 
 
 @app.route('/food_delete/<foodId>/', methods=['GET', 'POST'])
 def food_delete(foodId):
-    #haven't written functionality yet
-    return
+    sql = "DELETE FROM Food WHERE foodId = (%s)"
+    params = (foodId)
+    conn.execute(sql, params)
+
+    flash("Food Deleted Successfully", category='success')
+    return redirect(url_for('food'))
 
 
 @app.route('/')
