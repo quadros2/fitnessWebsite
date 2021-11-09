@@ -8,7 +8,7 @@ import pymysql
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'KEY'
 
-
+#lloyd
 def init_connect_engine():
     if os.environ.get('GAE_ENV') != 'standard':
         variables = load(open("app.yaml"), Loader=Loader)
@@ -31,13 +31,15 @@ def init_connect_engine():
 
 engine = init_connect_engine()
 conn = engine.connect()
-
+#chan
 @app.route('/food')
 def food():
     all_data = conn.execute("SELECT * FROM Food;").fetchall()
     return render_template("food.html", foods=all_data)
 
+#search is also chan
 
+#ben
 @app.route('/food_insert', methods=['POST'])
 def food_insert():
     if request.method == 'POST':
@@ -51,7 +53,7 @@ def food_insert():
         flash("Food Inserted Successfully", category='success')
         return redirect(url_for('food'))
 
-
+#ben
 @app.route('/food_update', methods=['GET', 'POST'])
 def food_update():
     if request.method == 'POST':
@@ -68,7 +70,7 @@ def food_update():
         return redirect(url_for('food'))
 
 
-
+#ben
 @app.route('/food_delete/<foodId>/', methods=['GET', 'POST'])
 def food_delete(foodId):
     sql = "DELETE FROM Food WHERE foodId = (%s)"
@@ -78,7 +80,7 @@ def food_delete(foodId):
     flash("Food Deleted Successfully", category='success')
     return redirect(url_for('food'))
 
-
+#shrirang
 @app.route('/totalCals')
 def totalCals():
 
@@ -91,7 +93,7 @@ def totalCals():
     all_data = conn.execute(sql).fetchall()
     return render_template("totalCals.html", totals=all_data)
 
-
+#shrirang
 @app.route('/totalBurned')
 def totalBurned():
 
