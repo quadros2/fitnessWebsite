@@ -7,6 +7,31 @@
   </head>
   <body>
     <div class="container">
+      {% with messages = get_flashed_messages(with_categories=True) %}
+
+                {% if messages %}
+
+                {% for category, message in messages %}
+
+                <div class="alert alert-{{ category }} alert-dismissable" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+
+                        <span aria-hidden="true">x</span>
+
+                    </button>
+
+
+                {{message}}
+
+
+                </div>
+
+
+                {% endfor %}
+
+                {% endif %}
+                {% endwith %}
       <h1>Welcome! Please login</h1>
       <form method="post" action="http://localhost:5000/login">
         <input type="text" placeholder="Username" name="username" id="username">

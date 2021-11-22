@@ -32,7 +32,7 @@ def init_connect_engine():
 engine = init_connect_engine()
 conn = engine.connect()
 #chan
-@app.route('/food', methods=['POST'])
+@app.route('/food', methods=['POST', 'GET'])
 def food():
     #grabbing parameters from login page
     username = request.args.get('username')
@@ -117,7 +117,7 @@ def login():
     # check if username and password combo exists SELECT count(*) FROM Users WHERE username = (%s) AND  password = (%s)
     sql1 = "SELECT * FROM Users WHERE username = \"{}\" AND password = \"{}\"".format(username, password)
     if len(conn.execute(sql1).fetchall()) == 0:
-        flash("NOPE")
+        flash("NOPE", category='success')
         return redirect(url_for('chandrachur'))
     else:
         #pass username and password params to the food URL
