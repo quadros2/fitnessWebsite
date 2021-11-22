@@ -32,8 +32,12 @@ def init_connect_engine():
 engine = init_connect_engine()
 conn = engine.connect()
 #chan
-@app.route('/food')
+@app.route('/food', methods=['POST'])
 def food():
+    #grabbing parameters from login page
+    username = request.args.get('username')
+    password = request.args.get('password')
+
     all_data = conn.execute("SELECT * FROM Food;").fetchall()
     return render_template("food.html", foods=all_data)
 
@@ -105,10 +109,63 @@ def totalBurned():
     all_data = conn.execute(sql).fetchall()
     return render_template("totalBurned.html", totals=all_data)
 
+@app.route('/login', methods=["POST"])
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
 
-@app.route('/')
-def chandrachur():
+    # check if username and password combo exists SELECT count(*) FROM Users WHERE username = (%s) AND  password = (%s)
+    sql1 = "SELECT * FROM Users WHERE username = \"{}\" AND password = \"{}\"".format(username, password)
+    if len(conn.execute(sql1).fetchall()) == 0:
+        flash("NOPE")
+        return redirect(url_for('chandrachur'))
+    else:
+        #pass username and password params to the food URL
+        return redirect(url_for('renderMain'))
+    
+@app.route('/signup', methods=["POST"])
+def signup():
+    username = request.form["username"]
+    password = request.form["password"]
+    firstName = request.form["firstName"]
+    lastName = request.form["lastName"]
+    calorieTarg = request.form["calorieTarg"]
+
+    # check if username exists
+    sql1 = "SELECT * FROM Users WHERE username = \"{}\"".format(username)
+    if len(conn.execute(sql1).fetchall()) == 1:
+        flash("NOPE")
+        return redirect(url_for('rendersignup'))
+    
+    #create a unique userid using newUserId = max(userId) + 1
+    sql2 = "SELECT MAX(userId) FROM Users"
+    maxUserIdDict = {}
+    maxUserId = conn.execute(sql2)
+    for rowproxy in maxUserId:
+        for column, value in rowproxy.items():
+            # build up the dictionary
+            maxUserIdDict[column] = value
+    newMaxUserId = maxUserIdDict['MAX(userId)'] + 1
+
+    #insert new user in user table with given credentials
+    sql3 = "INSERT INTO Users VALUES ({}, \"{}\", \"{}\", \"{}\", \"{}\", {})".format(newMaxUserId, username, password, firstName, lastName, calorieTarg)
+    conn.execute(sql3)
+    
+    flash("success!")
+    return redirect(url_for('/renderMain'))
+
+
+@app.route('/rendersignup', methods=["POST"])
+def rendersignup():
+    return render_template("signup.html")
+
+@app.route('/renderMain')
+def renderMain():
     return render_template("menu.html")
+    
+@app.route('/', methods=["POST", "GET"])
+def chandrachur():
+    return render_template("login.html")
 
 
 if __name__ == "__main__":

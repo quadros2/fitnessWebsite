@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Fitness Page Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome! Create an account!</h1>
+      <form method="post" action="http://localhost:5000/signup">
+        <input type="text" placeholder="Username" name="username" id="username">
+        <input type="password" placeholder="Password" name="password" id="password">
+        <input type="text" placeholder="first Name" name="firstName" id="firstName">
+        <input type="text" placeholder="last Name" name="lastName" id="lastName">
+        <input type="text" placeholder="target calories per day" name="calorieTarg" id="calorieTarg">
+        <button class="btn btn-secondary">Sign Up!</button>
+      </form>
+      <form method="post" action="http://localhost:5000/">
+        <button class="btn btn-secondary">Back to Login!</button>
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+    </div>
+  </body>
+</html>
