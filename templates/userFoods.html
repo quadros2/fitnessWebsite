@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% include 'header.html' %}
 
-{% block title %} Total Calories Consumed {% endblock %}
+{% block title %} User's Foods {% endblock %}
 
 {% block body %}
 
 <div class="text-center">
 
-    <a href="/users_foods" class="btn btn-primary">UsersFoods Table</a>
     <a href="/users_exercises" class="btn btn-primary">UsersExercises Table</a>
     <a href="/foodHistory" class="btn btn-primary">User's Food History Table</a>
     <a href="/exerciseHistory" class="btn btn-primary">User's Exercise History Table</a>
     <!--    <a href="/food" class="btn btn-primary">Food Table</a>-->
+    <a href="/totalCals" class="btn btn-primary">Total Calories Consumed</a>
     <a href="/totalBurned" class="btn btn-primary">Total Calories Burned</a>
 
 </div>
@@ -24,24 +24,22 @@
             <div class="jumbotron p-3">
 
 
-                <table class="table table-hover table-dark totalCals_table">
+                <table class="table table-hover table-dark userFoods_table">
 
                     <thead>
                     <tr>
-                        <th>firstName</th>
-                        <th>lastName</th>
-                        <th>date</th>
-                        <th>totalCals</th>
+                        <th>usersFoodsId</th>
+                        <th>userId</th>
+                        <th>foodId</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                   {% for row in totals %}
+                   {% for row in users_foods %}
                     <tr>
-                        <td>{{row.firstName}}</td>
-                        <td>{{row.lastName}}</td>
-                        <td>{{row.date}}</td>
-                        <td>{{row.totalCals}}</td>
+                        <td>{{row.usersFoodsId}}</td>
+                        <td>{{row.userId}}</td>
+                        <td>{{row.foodId}}</td>
 
                     </tr>
 
@@ -64,7 +62,7 @@
 </div>
 
 <script>
-    $('.totalCals_table').DataTable();
+    $('.userFoods_table').DataTable();
 </script>
 
 

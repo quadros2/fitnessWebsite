@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% include 'header.html' %}
 
-{% block title %} Food {% endblock %}
+{% block title %} User's Food History {% endblock %}
 
 {% block body %}
 
@@ -9,8 +9,8 @@
 
     <a href="/users_foods" class="btn btn-primary">UsersFoods Table</a>
     <a href="/users_exercises" class="btn btn-primary">UsersExercises Table</a>
-    <a href="/foodHistory" class="btn btn-primary">User's Food History Table</a>
     <a href="/exerciseHistory" class="btn btn-primary">User's Exercise History Table</a>
+    <!--    <a href="/food" class="btn btn-primary">Food Table</a>-->
     <a href="/totalCals" class="btn btn-primary">Total Calories Consumed</a>
     <a href="/totalBurned" class="btn btn-primary">Total Calories Burned</a>
 
@@ -23,8 +23,8 @@
 
             <div class="jumbotron p-3">
 
-                <h2>Manage <b>Food </b>  <button type="button"  class="btn btn-success float-right"
-                data-toggle="modal" data-target="#mymodal">Add New Food</button> </h2>
+                <h2>Manage <b>Food History </b>  <button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Add New Food History</button> </h2>
 
 
                 {% with messages = get_flashed_messages(with_categories=True) %}
@@ -54,28 +54,30 @@
                 {% endwith %}
 
 
-                <table class="table table-hover table-dark food_table">
+                <table class="table table-hover table-dark foodhistory_table">
 
                     <thead>
                     <tr>
-                        <th>foodId</th>
-                        <th>foodName</th>
-                        <th>calories</th>
+                        <th>foodHistoryId</th>
+                        <th>usersFoodsId</th>
+                        <th>date</th>
+                        <th>quantity</th>
                         <th>Action</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                   {% for row in foods %}
+                   {% for row in foodhists %}
                     <tr>
-                        <td>{{row.foodId}}</td>
-                        <td>{{row.foodName}}</td>
-                        <td>{{row.calories}}</td>
+                        <td>{{row.foodHistoryId}}</td>
+                        <td>{{row.usersFoodsId}}</td>
+                        <td>{{row.date}}</td>
+                        <td>{{row.quantity}}</td>
 
 
                         <td>
-                            <a href="/food_update/{{row.foodId}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.foodId}}">Edit</a>
-                            <a href="/food_delete/{{row.foodId}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
+                            <a href="/foodHistory_update/{{row.foodHistoryId}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.foodHistoryId}}">Edit</a>
+                            <a href="foodHistory_delete/{{row.foodHistoryId}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete?')">Delete</a>
 
                         </td>
 
@@ -83,8 +85,8 @@
 
 
 
-                  <!-- Modal Edit Food-->
-<div id="modaledit{{row.foodId}}" class="modal fade" role="dialog">
+                  <!-- Modal Edit Food History-->
+<div id="modaledit{{row.foodHistoryId}}" class="modal fade" role="dialog">
    <div class="modal-dialog">
 
 
@@ -103,16 +105,16 @@
          <div class="modal-body">
 
 
-            <form action="{{url_for('food_update')}}" method="POST">
+            <form action="{{url_for('foodHistory_update')}}" method="POST">
 
 
                <div class="form-group">
 
 
-                  <label>foodName:</label>
-                   <input type="hidden"  name="foodId" value="{{row.foodId}}">
+                  <label>usersFoodsId:</label>
+                   <input type="hidden"  name="foodHistoryId" value="{{row.foodHistoryId}}">
 
-                  <input type="text" maxlength="100" class="form-control" name="foodName" value="{{row.foodName}}" required="1">
+                  <input type="number" class="form-control" name="usersFoodsId" value="{{row.usersFoodsId}}" required="1">
 
 
                </div>
@@ -120,10 +122,21 @@
                 <div class="form-group">
 
 
-                  <label>calories:</label>
-                   <input type="hidden"  name="foodId" value="{{row.foodId}}">
+                  <label>date:</label>
+                   <input type="hidden"  name="foodHistoryId" value="{{row.foodHistoryId}}">
 
-                  <input type="number" class="form-control" name="calories" value="{{row.calories}}" required="1">
+                  <input type="date" class="form-control" name="date" value="{{row.date}}" required="1">
+
+
+               </div>
+
+                <div class="form-group">
+
+
+                  <label>quantity:</label>
+                   <input type="hidden"  name="foodHistoryId" value="{{row.foodHistoryId}}">
+
+                  <input type="number" class="form-control" name="quantity" value="{{row.quantity}}" required="1">
 
 
                </div>
@@ -171,7 +184,7 @@
 
 
 
-                  <!-- Modal Add Food-->
+                  <!-- Modal Add Food History-->
 
 
 <div id="mymodal" class="modal fade" role="dialog">
@@ -179,25 +192,33 @@
       <div class="modal-content">
          <div class="modal-header">
 
-            <h4 class="modal-title">Add Food</h4>
+            <h4 class="modal-title">Add Food History</h4>
          </div>
          <div class="modal-body">
 
-            <form action="{{url_for('food_insert')}}" method="POST">
+            <form action="{{url_for('foodHistory_insert')}}" method="POST">
 
 
                <div class="form-group">
 
-                  <label>foodName:</label>
-                  <input type="text" maxlength="100" class="form-control" name="foodName" required="1">
+                  <label>usersFoodsId:</label>
+                  <input type="number" class="form-control" name="usersFoodsId" required="1">
 
 
                </div>
 
                 <div class="form-group">
 
-                  <label>calories:</label>
-                  <input type="number" class="form-control" name="calories" required="1">
+                  <label>date:</label>
+                  <input type="date" class="form-control" name="date" required="1">
+
+
+               </div>
+
+                <div class="form-group">
+
+                  <label>quantity:</label>
+                  <input type="number" class="form-control" name="quantity" required="1">
 
 
                </div>
@@ -208,7 +229,7 @@
                <div class="form-group">
 
 
-                  <button class="btn btn-primary" type="submit">Add Food</button>
+                  <button class="btn btn-primary" type="submit">Add Food History</button>
 
 
                </div>
@@ -248,7 +269,7 @@
 </div>
 
 <script>
-    $('.food_table').DataTable();
+    $('.foodhistory_table').DataTable();
 </script>
 
 
