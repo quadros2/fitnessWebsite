@@ -279,30 +279,48 @@ def exerciseHistory_delete(exerciseHistoryId):
     return redirect(url_for('exerciseHistory'))
 
 
+@app.route('/updateData')
+def updateData():
+    params = (globaluserid)
+    sql = "CALL Analysis(%s)"
+    conn.execute(sql, params)
+    return redirect(url_for('renderMain'))
+
+
 @app.route('/userTotalCals', methods=['POST', 'GET'])
 def userTotalCals():
-    sql = "SELECT firstName, lastName, date, SUM(fh.quantity * f.calories) as totalCals " \
-          "FROM FoodHistory fh NATURAL JOIN UsersFoods uf NATURAL JOIN Users u NATURAL JOIN Food f " \
-          "WHERE userId = (%s)" \
-          "GROUP BY userId, firstName, lastName, date " \
-          "ORDER BY firstName, lastName"
+    # sql = "SELECT firstName, lastName, date, SUM(fh.quantity * f.calories) as totalCals " \
+    #       "FROM FoodHistory fh NATURAL JOIN UsersFoods uf NATURAL JOIN Users u NATURAL JOIN Food f " \
+    #       "WHERE userId = (%s)" \
+    #       "GROUP BY userId, firstName, lastName, date " \
+    #       "ORDER BY firstName, lastName"
 
-    params = (globaluserid)
-    all_data = conn.execute(sql, params).fetchall()
+    sql = "SELECT * FROM userTotalCals"
+    # all_data = conn.execute(sql, params).fetchall()
+    all_data = conn.execute(sql).fetchall()
     return render_template("userTotalCals.html", totals=all_data)
 
 
 @app.route('/userTotalBurned', methods=['POST', 'GET'])
 def userTotalBurned():
-    sql = "SELECT firstName, lastName, date, SUM(duration * caloriesBurned) as totalBurned " \
-          "FROM ExerciseHistory eh NATURAL JOIN UsersExercises ue NATURAL JOIN Users u NATURAL JOIN Exercise e " \
-          "WHERE userId = (%s)" \
-          "GROUP BY userId, firstName, lastName, date " \
-          "ORDER BY firstName, lastName"
+    # sql = "SELECT firstName, lastName, date, SUM(duration * caloriesBurned) as totalBurned " \
+    #       "FROM ExerciseHistory eh NATURAL JOIN UsersExercises ue NATURAL JOIN Users u NATURAL JOIN Exercise e " \
+    #       "WHERE userId = (%s)" \
+    #       "GROUP BY userId, firstName, lastName, date " \
+    #       "ORDER BY firstName, lastName"
+    #
 
-    params = (globaluserid)
-    all_data = conn.execute(sql, params).fetchall()
+    sql = "SElECT * FROM userTotalBurned"
+    # all_data = conn.execute(sql, params).fetchall()
+    all_data = conn.execute(sql).fetchall()
     return render_template("userTotalBurned.html", totals=all_data)
+
+
+@app.route('/appPopularity', methods=['POST', 'GET'])
+def appPopularity():
+    sql = "SELECT * FROM appPopularity"
+    all_data = conn.execute(sql).fetchall()
+    return render_template("appPopularity.html", data=all_data)
 
 
 @app.route('/rendersignup', methods=["POST"])
